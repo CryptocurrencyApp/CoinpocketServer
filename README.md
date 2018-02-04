@@ -2,10 +2,10 @@
 サーバーサイド
 
 # 環境
-MySQL : 5.7.21
-Beego : 1.9.2
-Bee CLI : 1.9.1
-GoVersion : 1.9.3
+- MySQL : 5.7.21
+- Beego : 1.9.2
+- Bee CLI : 1.9.1
+- GoVersion : 1.9.3
 
 
 # ローカル開発環境の起動方法
