@@ -19,15 +19,15 @@ func init() {
 
 // Run the migrations
 func (m *Users_20180204_220422) Up() {
-	sql := "CREATE TABLE Users(" +
-		"Id nvarchar(80) PRIMARY KEY," +
-		"Name nvarchar(100), " +
-		"Sex nvarchar(10), " +
-		"Birthday datetime, " +
-		"Mail nvarchar(100), " +
-		"Password nvarchar(300), " +
-		"Salt nvarchar(300), " +
-		"crated_at datetime, " +
+	sql := "CREATE TABLE users(" +
+		"id nvarchar(80) PRIMARY KEY," +
+		"name nvarchar(100), " +
+		"sex nvarchar(10), " +
+		"birthday datetime, " +
+		"mail nvarchar(100), " +
+		"password nvarchar(300), " +
+		"salt nvarchar(300), " +
+		"created_at datetime, " +
 		"update_at datetime);"
 
 	m.SQL(sql)
@@ -37,5 +37,5 @@ func (m *Users_20180204_220422) Up() {
 // Reverse the migrations
 func (m *Users_20180204_220422) Down() {
 	// use m.SQL("DROP TABLE ...") to reverse schema update
-
+	m.SQL("DROP TABLE users;")
 }
