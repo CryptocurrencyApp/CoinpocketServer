@@ -28,7 +28,7 @@ func (m *Users_20180204_220422) Up() {
 		"password nvarchar(300), " +
 		"salt nvarchar(300), " +
 		"created_at datetime, " +
-		"update_at datetime);"
+		"updated_at datetime);"
 
 	m.SQL(sql)
 
