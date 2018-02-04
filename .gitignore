@@ -20,3 +20,6 @@
 CoinpocketServer
 lastupdate.tmp
 routers/commentsRouter_controllers.go
+
+# vendor
+vendor/
