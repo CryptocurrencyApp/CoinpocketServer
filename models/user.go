@@ -8,7 +8,7 @@ import (
 	"math/rand"
 )
 
-type User struct {
+type Users struct {
 	Id        string    `json:"id" orm:"pk"`
 	Name      string    `json:"name"`
 	Sex       string    `json:"sex"`
@@ -21,10 +21,10 @@ type User struct {
 }
 
 func init() {
-	orm.RegisterModel(new(User))
+	orm.RegisterModel(new(Users))
 }
 
-func AddUser(u User) (i string, err error) {
+func AddUser(u Users) (i string, err error) {
 	o := orm.NewOrm()
 	rand.Seed(time.Now().UnixNano())
 
@@ -37,9 +37,9 @@ func AddUser(u User) (i string, err error) {
 	return u.Id, nil
 }
 
-func GetUserById(id string) (u *User, err error) {
+func GetUserById(id string) (u *Users, err error) {
 	o := orm.NewOrm()
-	u = &User{Id: id}
+	u = &Users{Id: id}
 	if err = o.Read(u); err == nil {
 		return u, nil
 	}
