@@ -16,3 +16,7 @@
 .DS_Store
 .vscode/*
 .idea/*
+
+CoinpocketServer
+lastupdate.tmp
+routers/commentsRouter_controllers.go
