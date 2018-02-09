@@ -2,14 +2,14 @@ package models
 
 import (
 	"fmt"
+	"github.com/CryptocurrencyApp/CoinpocketServer/lib/hash"
 	"github.com/astaxie/beego/orm"
 	"math/rand"
 	"strconv"
 	"time"
-	"github.com/CryptocurrencyApp/CoinpocketServer/lib/hash"
 )
 
-type User struct {
+type Users struct {
 	Id        string    `json:"id" orm:"pk"`
 	Name      string    `json:"name"`
 	Sex       string    `json:"sex"`
@@ -22,14 +22,14 @@ type User struct {
 }
 
 func init() {
-	orm.RegisterModel(new(User))
+	orm.RegisterModel(new(Users))
 }
 
-func AddUser(u *User) (i string, err error) {
+func AddUser(u *Users) (i string, err error) {
 	o := orm.NewOrm()
 	rand.Seed(time.Now().UnixNano())
 	u.Id = strconv.Itoa(rand.Intn(15))
-	u.Salt =  strconv.Itoa(rand.Intn(20))
+	u.Salt = strconv.Itoa(rand.Intn(20))
 	u.Password = hash.ToHash(u.Password)
 
 	id, err := o.Insert(&u)
@@ -40,18 +40,18 @@ func AddUser(u *User) (i string, err error) {
 	return u.Id, nil
 }
 
-func GetUserById(id string) (u *User, err error) {
+func GetUserById(id string) (u *Users, err error) {
 	o := orm.NewOrm()
-	u = &User{Id: id}
+	u = &Users{Id: id}
 	if err = o.Read(u); err == nil {
 		return u, nil
 	}
 	return nil, err
 }
 
-func UpdateUserById(m *User) (err error) {
+func UpdateUserById(m *Users) (err error) {
 	o := orm.NewOrm()
-	v := User{Id: m.Id}
+	v := Users{Id: m.Id}
 
 	if err = o.Read(&v); err == nil {
 		var num int64

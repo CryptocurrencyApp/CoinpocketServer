@@ -12,14 +12,14 @@ type UserController struct {
 	beego.Controller
 }
 
- //@Title CreateUser
- //@Description create users
- //@Param	body		body 	models.User	true		"body for user content"
- //@Success 200 {int} models.User.Id
- //@Failure 403 body is empty
- //@router / [post]
+//@Title CreateUser
+//@Description create users
+//@Param	body		body 	models.User	true		"body for user content"
+//@Success 200 {int} models.User.Id
+//@Failure 403 body is empty
+//@router / [post]
 func (u *UserController) Post() {
-	var user models.User
+	var user models.Users
 	json.Unmarshal(u.Ctx.Input.RequestBody, &user)
 	uid, err := models.AddUser(&user)
 	if err != nil {
@@ -60,7 +60,7 @@ func (u *UserController) Get() {
 func (u *UserController) Put() {
 	uid := u.GetString(":id")
 	if uid != "" {
-		var user models.User
+		var user models.Users
 		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
 		err := models.UpdateUserById(&user)
 		if err != nil {
