@@ -54,6 +54,8 @@ func (c *AssetsController) GetOne() {
 // @router / [get]
 func (c *AssetsController) GetAll() {
 
+	c.Data["json"] = map[string]string{"example": "example"}
+	c.ServeJSON()
 }
 
 // Put ...
