@@ -32,7 +32,7 @@ func AddUser(u *User) (i string, err error) {
 	u.Salt = strconv.Itoa(rand.Intn(20))
 	u.Password = hash.ToHash(u.Password)
 
-	id, err := o.Insert(&u)
+	id, err := o.Insert(u)
 	fmt.Printf("ID: %d, ERR: %v\n", id, err)
 	if err != nil {
 		return "", err
@@ -53,7 +53,7 @@ func UpdateUserById(m *User) (err error) {
 	o := orm.NewOrm()
 	v := User{Id: m.Id}
 
-	if err = o.Read(&v); err == nil {
+	if err = o.Read(v); err == nil {
 		var num int64
 		if num, err = o.Update(m); err == nil {
 			fmt.Println("Number of records updated in database:", num)
