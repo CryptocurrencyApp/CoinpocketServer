@@ -53,7 +53,7 @@ func UpdateUserById(m *User) (err error) {
 	o := orm.NewOrm()
 	v := User{Id: m.Id}
 
-	if err = o.Read(v); err == nil {
+	if err = o.Read(&v); err == nil {
 		var num int64
 		if num, err = o.Update(m); err == nil {
 			fmt.Println("Number of records updated in database:", num)

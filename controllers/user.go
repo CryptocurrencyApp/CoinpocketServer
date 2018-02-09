@@ -62,6 +62,7 @@ func (u *UserController) Put() {
 	if uid != "" {
 		var user models.User
 		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
+		user.Id = uid
 		err := models.UpdateUserById(&user)
 		if err != nil {
 			u.Data["json"] = err.Error()
