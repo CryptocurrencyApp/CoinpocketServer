@@ -19,7 +19,7 @@ type UserController struct {
 //@Failure 403 body is empty
 //@router / [post]
 func (u *UserController) Post() {
-	var user models.Users
+	var user models.User
 	json.Unmarshal(u.Ctx.Input.RequestBody, &user)
 	uid, err := models.AddUser(&user)
 	if err != nil {
@@ -60,7 +60,7 @@ func (u *UserController) Get() {
 func (u *UserController) Put() {
 	uid := u.GetString(":id")
 	if uid != "" {
-		var user models.Users
+		var user models.User
 		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
 		err := models.UpdateUserById(&user)
 		if err != nil {

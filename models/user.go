@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type Users struct {
+type User struct {
 	Id        string    `json:"id" orm:"pk"`
 	Name      string    `json:"name"`
 	Sex       string    `json:"sex"`
@@ -22,10 +22,10 @@ type Users struct {
 }
 
 func init() {
-	orm.RegisterModel(new(Users))
+	orm.RegisterModel(new(User))
 }
 
-func AddUser(u *Users) (i string, err error) {
+func AddUser(u *User) (i string, err error) {
 	o := orm.NewOrm()
 	rand.Seed(time.Now().UnixNano())
 	u.Id = strconv.Itoa(rand.Intn(15))
@@ -40,18 +40,18 @@ func AddUser(u *Users) (i string, err error) {
 	return u.Id, nil
 }
 
-func GetUserById(id string) (u *Users, err error) {
+func GetUserById(id string) (u *User, err error) {
 	o := orm.NewOrm()
-	u = &Users{Id: id}
+	u = &User{Id: id}
 	if err = o.Read(u); err == nil {
 		return u, nil
 	}
 	return nil, err
 }
 
-func UpdateUserById(m *Users) (err error) {
+func UpdateUserById(m *User) (err error) {
 	o := orm.NewOrm()
-	v := Users{Id: m.Id}
+	v := User{Id: m.Id}
 
 	if err = o.Read(&v); err == nil {
 		var num int64
