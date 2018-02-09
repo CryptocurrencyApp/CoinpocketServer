@@ -1,14 +1,15 @@
 package models
 
 import (
+	"fmt"
+	"github.com/astaxie/beego/orm"
+	"math/rand"
 	"strconv"
 	"time"
-	"github.com/astaxie/beego/orm"
-	"fmt"
-	"math/rand"
+	"github.com/CryptocurrencyApp/CoinpocketServer/lib/hash"
 )
 
-type Users struct {
+type User struct {
 	Id        string    `json:"id" orm:"pk"`
 	Name      string    `json:"name"`
 	Sex       string    `json:"sex"`
@@ -21,61 +22,47 @@ type Users struct {
 }
 
 func init() {
-	orm.RegisterModel(new(Users))
+	orm.RegisterModel(new(User))
 }
 
-func AddUser(u Users) (i string, err error) {
+func AddUser(u *User) (i string, err error) {
 	o := orm.NewOrm()
 	rand.Seed(time.Now().UnixNano())
+	u.Id = strconv.Itoa(rand.Intn(15))
+	u.Salt =  strconv.Itoa(rand.Intn(20))
+	u.Password = hash.ToHash(u.Password)
 
 	id, err := o.Insert(&u)
 	fmt.Printf("ID: %d, ERR: %v\n", id, err)
 	if err != nil {
 		return "", err
 	}
-	u.Id = strconv.Itoa(rand.Intn(15))
 	return u.Id, nil
 }
 
-func GetUserById(id string) (u *Users, err error) {
+func GetUserById(id string) (u *User, err error) {
 	o := orm.NewOrm()
-	u = &Users{Id: id}
+	u = &User{Id: id}
 	if err = o.Read(u); err == nil {
 		return u, nil
 	}
 	return nil, err
 }
 
-//
-//func GetAllUsers() map[string]*User {
-//	return UserList
-//}
-//
-//func UpdateUser(uid string, uu *User) (a *User, err error) {
-//	if u, ok := UserList[uid]; ok {
-//		if uu.Username != "" {
-//			u.Username = uu.Username
-//		}
-//		if uu.Password != "" {
-//			u.Password = uu.Password
-//		}
-//		if uu.Profile.Age != 0 {
-//			u.Profile.Age = uu.Profile.Age
-//		}
-//		if uu.Profile.Address != "" {
-//			u.Profile.Address = uu.Profile.Address
-//		}
-//		if uu.Profile.Gender != "" {
-//			u.Profile.Gender = uu.Profile.Gender
-//		}
-//		if uu.Profile.Email != "" {
-//			u.Profile.Email = uu.Profile.Email
-//		}
-//		return u, nil
-//	}
-//	return nil, errors.New("User Not Exist")
-//}
-//
+func UpdateUserById(m *User) (err error) {
+	o := orm.NewOrm()
+	v := User{Id: m.Id}
+
+	if err = o.Read(&v); err == nil {
+		var num int64
+		if num, err = o.Update(m); err == nil {
+			fmt.Println("Number of records updated in database:", num)
+		}
+		return nil
+	}
+	return err
+}
+
 //func Login(username, password string) bool {
 //	for _, u := range UserList {
 //		if u.Username == username && u.Password == password {
@@ -83,8 +70,4 @@ func GetUserById(id string) (u *Users, err error) {
 //		}
 //	}
 //	return false
-//}
-//
-//func DeleteUser(uid string) {
-//	delete(UserList, uid)
 //}

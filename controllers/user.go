@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"encoding/json"
+	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 
 	"github.com/astaxie/beego"
 )
@@ -12,16 +12,16 @@ type UserController struct {
 	beego.Controller
 }
 
-// @Title CreateUser
-// @Description create users
-// @Param	body		body 	models.User	true		"body for user content"
-// @Success 200 {int} models.User.Id
-// @Failure 403 body is empty
-// @router / [post]
+ //@Title CreateUser
+ //@Description create users
+ //@Param	body		body 	models.User	true		"body for user content"
+ //@Success 200 {int} models.User.Id
+ //@Failure 403 body is empty
+ //@router / [post]
 func (u *UserController) Post() {
-	var user models.Users
+	var user models.User
 	json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-	uid, err := models.AddUser(user)
+	uid, err := models.AddUser(&user)
 	if err != nil {
 		u.Data["json"] = err.Error()
 	} else {
@@ -57,34 +57,20 @@ func (u *UserController) Get() {
 // @Failure 403 :uid is not int
 // @router /:uid [put]
 
-//func (u *UserController) Put() {
-//	uid := u.GetString(":uid")
-//	if uid != "" {
-//		var user models.User
-//		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-//		uu, err := models.UpdateUser(uid, &user)
-//		if err != nil {
-//			u.Data["json"] = err.Error()
-//		} else {
-//			u.Data["json"] = uu
-//		}
-//	}
-//	u.ServeJSON()
-//}
-
-// @Title Delete
-// @Description delete the user
-// @Param	uid		path 	string	true		"The uid you want to delete"
-// @Success 200 {string} delete success!
-// @Failure 403 uid is empty
-// @router /:uid [delete]
-
-//func (u *UserController) Delete() {
-//	uid := u.GetString(":uid")
-//	models.DeleteUser(uid)
-//	u.Data["json"] = "delete success!"
-//	u.ServeJSON()
-//}
+func (u *UserController) Put() {
+	uid := u.GetString(":id")
+	if uid != "" {
+		var user models.User
+		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
+		err := models.UpdateUserById(&user)
+		if err != nil {
+			u.Data["json"] = err.Error()
+		} else {
+			u.Data["json"] = user
+		}
+	}
+	u.ServeJSON()
+}
 
 // @Title Login
 // @Description Logs user into the system
@@ -114,4 +100,3 @@ func (u *UserController) Get() {
 //	u.Data["json"] = "logout success"
 //	u.ServeJSON()
 //}
-
