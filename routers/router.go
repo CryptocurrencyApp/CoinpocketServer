@@ -14,14 +14,13 @@ import (
 )
 
 func init() {
-	ns := beego.NewNamespace("/users",
+	users := beego.NewNamespace("/users",
 		beego.NSRouter("/", &controllers.UserController{}, "post:Post"),
 		beego.NSRouter("/:id", &controllers.UserController{}, "get:Get"),
 		beego.NSRouter("/:id", &controllers.UserController{}, "put:Put"),
 	)
-	ns2 := beego.NewNamespace("/assets",
+	assets := beego.NewNamespace("/assets",
 		beego.NSRouter("/", &controllers.AssetsController{}, "get:GetAll"),
 	)
-	beego.AddNamespace(ns)
-	beego.AddNamespace(ns2)
+	beego.AddNamespace(users, assets)
 }
