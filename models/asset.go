@@ -10,10 +10,10 @@ import (
 )
 
 type Asset struct {
-	Id     int64  `orm:"auto"`
+	Id     int64  `orm:"auto;pk"`
 	UserId string `orm:"size(128)"`
 	CoinId string `orm:"size(128)"`
-	Amount float64
+	Amount string
 }
 
 func init() {

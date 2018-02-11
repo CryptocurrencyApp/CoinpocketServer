@@ -20,10 +20,10 @@ func init() {
 // Run the migrations
 func (m *Asset_20180210_060324) Up() {
 	sql := "CREATE TABLE asset(" +
-		"id int PRIMARY KEY," +
+		"id int AUTO_INCREMENT PRIMARY KEY," +
 		"user_id nvarchar(100)," +
 		"coin_id nvarchar(100)," +
-		"amount decimal" +
+		"amount nvarchar(100)" +
 		");"
 
 	m.SQL(sql)
