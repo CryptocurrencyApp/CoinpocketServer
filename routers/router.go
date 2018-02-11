@@ -20,7 +20,7 @@ func init() {
 		beego.NSRouter("/:id", &controllers.UserController{}, "put:Put"),
 	)
 	assets := beego.NewNamespace("/assets",
-		beego.NSRouter("/", &controllers.AssetsController{}, "get:GetAll"),
+		beego.NSRouter("", &controllers.AssetsController{}),
 	)
 	beego.AddNamespace(users, assets)
 }

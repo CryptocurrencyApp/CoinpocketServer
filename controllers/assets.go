@@ -2,11 +2,22 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/CryptocurrencyApp/CoinpocketServer/models"
+	"encoding/json"
+	"log"
+	"strconv"
+	"fmt"
 )
 
 // AssetsController operations for Assets
 type AssetsController struct {
 	beego.Controller
+}
+
+type PostRequest struct {
+	Id     string
+	UserId string `json:"user_id"`
+	Amount float64
 }
 
 // URLMapping ...
@@ -26,7 +37,24 @@ func (c *AssetsController) URLMapping() {
 // @Failure 403 body is empty
 // @router / [post]
 func (c *AssetsController) Post() {
+	var asset models.Asset
+	request := PostRequest{}
 
+	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
+
+	asset.CoinId = request.Id
+	asset.UserId = request.UserId
+	asset.Amount = fmt.Sprint(request.Amount)
+
+	id, err := models.AddAsset(&asset)
+	if err != nil {
+		log.Fatal(err)
+		c.Data["json"] = err
+	} else {
+		c.Data["json"] = map[string]string{"id": strconv.Itoa(int(id))}
+	}
+
+	c.ServeJSON()
 }
 
 // GetOne ...
