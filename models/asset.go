@@ -30,13 +30,18 @@ func AddAsset(m *Asset) (id int64, err error) {
 
 // GetAssetById retrieves Asset by Id. Returns error if
 // Id doesn't exist
-func GetAssetById(id int64) (v *Asset, err error) {
+func GetAssetById(userId string) (v *[]Asset, errMsg string) {
 	o := orm.NewOrm()
-	v = &Asset{Id: id}
-	if err = o.QueryTable(new(Asset)).Filter("Id", id).RelatedSel().One(v); err == nil {
-		return v, nil
+	table := o.QueryTable("asset")
+
+	var asset []Asset
+
+	cnt, _ := table.Filter("UserId", userId).All(&asset, "CoinId", "Amount")
+	if cnt == 0 {
+		return nil, "No result found."
+	} else {
+		return &asset, ""
 	}
-	return nil, err
 }
 
 // GetAllAsset retrieves all Asset matches certain condition. Returns empty list if

@@ -81,8 +81,30 @@ func (c *AssetsController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *AssetsController) GetAll() {
+	userId := c.GetString(":id")
 
-	c.Data["json"] = map[string]string{"example": "example"}
+	if userId == "" {
+		c.Data["json"] = map[string]string{"message": "You need specified user id"}
+		c.ServeJSON()
+	}
+
+	asset, err := models.GetAssetById(userId)
+	if err != "" {
+		c.Ctx.Output.Status = 404
+		c.Data["json"] = map[string]string{"message": err}
+	} else {
+		var result []map[string]string
+
+		for _, a := range *asset {
+			result = append(result, map[string]string{
+				"id":     a.CoinId,
+				"amount": a.Amount,
+			})
+		}
+
+		c.Data["json"] = result
+	}
+
 	c.ServeJSON()
 }
 
