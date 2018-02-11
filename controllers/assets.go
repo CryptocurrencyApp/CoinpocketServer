@@ -5,7 +5,6 @@ import (
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"encoding/json"
 	"log"
-	"strconv"
 	"fmt"
 	"os"
 	"io/ioutil"
@@ -48,12 +47,12 @@ func (c *AssetsController) Post() {
 	asset.UserId = request.UserId
 	asset.Amount = fmt.Sprint(request.Amount)
 
-	id, err := models.AddAsset(&asset)
+	_, err := models.AddAsset(&asset)
 	if err != nil {
 		log.Fatal(err)
 		c.Data["json"] = err
 	} else {
-		c.Data["json"] = map[string]string{"id": strconv.Itoa(int(id))}
+		c.Data["json"] = map[string]string{"id": asset.CoinId, "amount": asset.Amount}
 	}
 
 	c.ServeJSON()
