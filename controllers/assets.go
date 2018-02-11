@@ -7,6 +7,8 @@ import (
 	"log"
 	"strconv"
 	"fmt"
+	"os"
+	"io/ioutil"
 )
 
 // AssetsController operations for Assets
@@ -95,10 +97,13 @@ func (c *AssetsController) GetAll() {
 	} else {
 		var result []map[string]string
 
+		rates := getRates()
+
 		for _, a := range *asset {
 			result = append(result, map[string]string{
-				"id":     a.CoinId,
-				"amount": a.Amount,
+				"id":        a.CoinId,
+				"amount":    a.Amount,
+				"price_jpy": getJpyPrice(a.CoinId, rates),
 			})
 		}
 
@@ -129,4 +134,53 @@ func (c *AssetsController) Put() {
 // @router /:id [delete]
 func (c *AssetsController) Delete() {
 
+}
+
+const priceFilePath = "./rateLog/newest.json"
+
+type Rates struct {
+	GetAt    string
+	InfoList []Rate
+}
+
+type Rate struct {
+	ID               string  `json:"id"`
+	Name             string  `json:"name"`
+	Symbol           string  `json:"symbol"`
+	PriceUsd         float64 `json:"price_usd"`
+	PriceJpy         float64 `json:"price_jpy"`
+	PriceBtc         float64 `json:"price_btc"`
+	PercentChange1H  float64 `json:"percent_change_1h"`
+	PercentChange24H float64 `json:"percent_change_24h"`
+	PercentChange7D  float64 `json:"percent_change_7d"`
+}
+
+func getJpyPrice(coinId string, rates Rates) (price string) {
+	for _, rate := range rates.InfoList {
+		if rate.ID == coinId {
+			price = fmt.Sprint(rate.PriceJpy)
+		}
+	}
+
+	return price
+}
+
+func getRates() (rates Rates) {
+	file, err := os.OpenFile(priceFilePath, os.O_RDONLY, 700)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	raw, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = json.Unmarshal(raw, &rates)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return rates
 }
