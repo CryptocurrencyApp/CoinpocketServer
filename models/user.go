@@ -6,6 +6,7 @@ import (
 	"time"
 	"github.com/CryptocurrencyApp/CoinpocketServer/lib/random"
 	"github.com/CryptocurrencyApp/CoinpocketServer/lib/hash"
+	"errors"
 )
 
 type User struct {
@@ -71,8 +72,13 @@ func Login(request *User) (userId string, err error) {
 	user := &User{Mail: request.Mail}
 
 	if err = o.Read(user, "mail"); err == nil {
-		fmt.Println(user)
-		return user.Id, nil
+		requestedPassword := hash.ToHash(request.Password, user.Salt)
+		if requestedPassword == user.Password {
+			return user.Id, nil
+		} else {
+			err = errors.New("Authentication faild.")
+			return "", err
+		}
 	}
 
 	return

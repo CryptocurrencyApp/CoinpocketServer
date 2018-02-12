@@ -42,4 +42,5 @@ func (c *LoginController) Login() {
 		c.Data["json"] = map[string]string{"id": userId}
 	}
 
+	c.ServeJSON()
 }
