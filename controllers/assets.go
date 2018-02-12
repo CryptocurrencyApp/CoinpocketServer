@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"io/ioutil"
+	"net/http"
 )
 
 // AssetsController operations for Assets
@@ -91,7 +92,7 @@ func (c *AssetsController) GetAll() {
 
 	asset, err := models.GetAssetById(userId)
 	if err != "" {
-		c.Ctx.Output.Status = 404
+		c.Ctx.Output.Status = http.StatusNotFound
 		c.Data["json"] = map[string]string{"message": err}
 	} else {
 		var result []map[string]string

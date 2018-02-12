@@ -3,8 +3,8 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
-
 	"github.com/astaxie/beego"
+	"net/http"
 )
 
 // Operations about Users
@@ -20,9 +20,10 @@ type UserController struct {
 //@router / [post]
 func (u *UserController) Post() {
 	var user models.User
-	json.Unmarshal(u.Ctx.Input.RequestBody, &user)
+	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)
 	uid, err := models.AddUser(&user)
 	if err != nil {
+		u.Ctx.Output.Status = http.StatusBadRequest
 		u.Data["json"] = err.Error()
 	} else {
 		u.Data["json"] = map[string]string{"uid": uid}
@@ -41,6 +42,7 @@ func (u *UserController) Get() {
 	if uid != "" {
 		user, err := models.GetUserById(uid)
 		if err != nil {
+			u.Ctx.Output.Status = http.StatusNotFound
 			u.Data["json"] = err.Error()
 		} else {
 			u.Data["json"] = user
@@ -65,6 +67,7 @@ func (u *UserController) Put() {
 		user.Id = uid
 		err := models.UpdateUserById(&user)
 		if err != nil {
+			u.Ctx.Output.Status = http.StatusBadRequest
 			u.Data["json"] = err.Error()
 		} else {
 			u.Data["json"] = user
