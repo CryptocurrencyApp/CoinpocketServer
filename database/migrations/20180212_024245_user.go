@@ -22,7 +22,7 @@ func (m *User_20180212_024245) Up() {
 	sql := "ALTER TABLE user MODIFY COLUMN name nvarchar(100) NOT NULL," +
 		"MODIFY COLUMN sex nvarchar(10) NOT NULL," +
 		"MODIFY COLUMN birthday datetime," +
-		"MODIFY COLUMN mail nvarchar(100) NOT NULL," +
+		"MODIFY COLUMN mail nvarchar(100) NOT NULL UNIQUE," +
 		"MODIFY COLUMN password nvarchar(300) NOT NULL," +
 		"MODIFY COLUMN salt nvarchar(300) NOT NULL;"
 
