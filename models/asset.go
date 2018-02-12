@@ -122,15 +122,11 @@ func GetAllAsset(query map[string]string, fields []string, sortby []string, orde
 // the record to be updated doesn't exist
 func UpdateAssetById(m *Asset) (err error) {
 	o := orm.NewOrm()
-	v := Asset{Id: m.Id}
-	// ascertain id exists in the database
-	if err = o.Read(&v); err == nil {
-		var num int64
-		if num, err = o.Update(m); err == nil {
-			fmt.Println("Number of records updated in database:", num)
-		}
-	}
-	return
+	_, err = o.QueryTable("asset").Filter("CoinId", m.CoinId).Filter("UserId", m.UserId).Update(orm.Params{
+		"Amount": m.Amount,
+	})
+
+	return err
 }
 
 // DeleteAsset deletes Asset by Id and returns error if

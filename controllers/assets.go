@@ -16,7 +16,7 @@ type AssetsController struct {
 	beego.Controller
 }
 
-type PostRequest struct {
+type Request struct {
 	Id     string
 	UserId string `json:"user_id"`
 	Amount float64
@@ -40,7 +40,7 @@ func (c *AssetsController) URLMapping() {
 // @router / [post]
 func (c *AssetsController) Post() {
 	var asset models.Asset
-	request := PostRequest{}
+	request := Request{}
 
 	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
 
@@ -122,7 +122,24 @@ func (c *AssetsController) GetAll() {
 // @Failure 403 :id is not int
 // @router /:id [put]
 func (c *AssetsController) Put() {
+	var asset models.Asset
 
+	request := Request{}
+	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
+
+	asset.CoinId = request.Id
+	asset.UserId = request.UserId
+	asset.Amount = fmt.Sprint(request.Amount)
+
+	err := models.UpdateAssetById(&asset)
+	if err != nil {
+		c.Ctx.Output.Status = http.StatusInternalServerError
+		c.Data["json"] = map[string]string{"message": err.Error()}
+	} else {
+		c.Data["json"] = map[string]string{"id": asset.CoinId, "amount": asset.Amount}
+	}
+
+	c.ServeJSON()
 }
 
 // Delete ...
