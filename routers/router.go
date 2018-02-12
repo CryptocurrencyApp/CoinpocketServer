@@ -23,5 +23,9 @@ func init() {
 		beego.NSRouter("", &controllers.AssetsController{}),
 		beego.NSRouter("/:id", &controllers.AssetsController{}, "get:GetAll"),
 	)
-	beego.AddNamespace(users, assets)
+	coinIds := beego.NewNamespace("/coinIds",
+		beego.NSRouter("", &controllers.CoinIdController{}, "get:GetAll"),
+	)
+
+	beego.AddNamespace(users, assets, coinIds)
 }
