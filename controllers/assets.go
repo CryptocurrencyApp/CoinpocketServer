@@ -52,8 +52,8 @@ func (c *AssetsController) Post() {
 
 	_, err := models.AddAsset(&asset)
 	if err != nil {
-		log.Fatal(err)
-		c.Data["json"] = err
+		c.Ctx.Output.Status = http.StatusBadRequest
+		c.Data["json"] = map[string]string{"message": "Already registered. Please use HTTP/PUT method."}
 	} else {
 		c.Data["json"] = map[string]string{"id": asset.CoinId, "amount": asset.Amount}
 	}
