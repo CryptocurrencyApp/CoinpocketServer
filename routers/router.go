@@ -38,6 +38,9 @@ func init() {
 	rates := beego.NewNamespace("/rates",
 		beego.NSRouter("", &controllers.RateController{}, "get:GetAll"),
 	)
+	login := beego.NewNamespace("/login",
+		beego.NSRouter("", &controllers.LoginController{}, "post:Login"),
+	)
 
-	beego.AddNamespace(users, assets, articles, coinIds, rates)
+	beego.AddNamespace(users, assets, articles, coinIds, rates, login)
 }

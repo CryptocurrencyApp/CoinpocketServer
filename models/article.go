@@ -13,8 +13,8 @@ type Article struct {
 	Url string `orm:"size(512)"`
 	Image string `orm:"size(512)"`
 	Comment string `orm:"size(256)"`
-	Good int64
-	Bad int64
+	Good int
+	Bad int
 	CreatedAt time.Time `json:"created_at" orm:"auto_now_add;type(datetime)"`
 	UpdatedAt time.Time `json:"updated_at" orm:"auto_now;type(datetime)"`
 }
@@ -75,19 +75,42 @@ func GetAllArticle() (ml *[]Article, err error) {
 	}
 }
 
-// UpdateArticle updates Article by Id and returns error if
-// the record to be updated doesn't exist
-func UpdateArticleById(m *Article) (err error) {
+func ToggleGood2Article(id int64, isAdd bool) (err error) {
 	o := orm.NewOrm()
-	v := Article{Id: m.Id}
-	// ascertain id exists in the database
-	if err = o.Read(&v); err == nil {
+	v := &Article{Id: id}
+	evaluation := -1
+	if isAdd {
+		evaluation = 1
+	}
+
+	if err = o.Read(v); err == nil {
 		var num int64
-		if num, err = o.Update(m); err == nil {
+		v.Good = v.Good + evaluation
+		if num, err = o.Update(v, "good"); err == nil {
 			fmt.Println("Number of records updated in database:", num)
+			return nil
 		}
 	}
-	return
+	return err
+}
+
+func ToggleBad2Article(id int64, isAdd bool) (err error) {
+	o := orm.NewOrm()
+	v := &Article{Id: id}
+	evaluation := -1
+	if isAdd {
+		evaluation = 1
+	}
+
+	if err = o.Read(v); err == nil {
+		var num int64
+		v.Bad = v.Bad + evaluation
+		if num, err = o.Update(v, "bad"); err == nil {
+			fmt.Println("Number of records updated in database:", num)
+			return nil
+		}
+	}
+	return err
 }
 
 // DeleteArticle deletes Article by Id and returns error if

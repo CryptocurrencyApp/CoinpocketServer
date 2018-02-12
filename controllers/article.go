@@ -97,11 +97,37 @@ func (c *ArticleController) GetAll() {
 }
 
 func (c *ArticleController) ToggleGood() {
-
+	id := c.GetString(":id")
+	if id != "" {
+		var evalation models.Evaluation
+		json.Unmarshal(c.Ctx.Input.RequestBody, &evalation)
+		i, err := strconv.ParseInt(id, 10, 64)
+		err = models.ToggleGood2Article(i, evalation.IsAdd)
+		if err != nil {
+			c.Ctx.Output.Status = http.StatusBadRequest
+			c.Data["json"] = err.Error()
+		} else {
+			c.Data["json"] = id
+		}
+	}
+	c.ServeJSON()
 }
 
 func (c *ArticleController) ToggleBad() {
-
+	id := c.GetString(":id")
+	if id != "" {
+		var evalation models.Evaluation
+		json.Unmarshal(c.Ctx.Input.RequestBody, &evalation)
+		i, err := strconv.ParseInt(id, 10, 64)
+		err = models.ToggleBad2Article(i, evalation.IsAdd)
+		if err != nil {
+			c.Ctx.Output.Status = http.StatusBadRequest
+			c.Data["json"] = err.Error()
+		} else {
+			c.Data["json"] = id
+		}
+	}
+	c.ServeJSON()
 }
 
 // Delete ...

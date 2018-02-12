@@ -14,7 +14,7 @@ type AssetsController struct {
 	beego.Controller
 }
 
-type Request struct {
+type AssetRequest struct {
 	Id     string
 	UserId string `json:"user_id"`
 	Amount float64
@@ -39,7 +39,7 @@ func (c *AssetsController) URLMapping() {
 func (c *AssetsController) Post() {
 	// ここ共通化出来る
 	var asset models.Asset
-	request := Request{}
+	request := AssetRequest{}
 
 	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
 
@@ -125,7 +125,7 @@ func (c *AssetsController) Put() {
 	// ここ共通化出来る
 	var asset models.Asset
 
-	request := Request{}
+	request := AssetRequest{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
 
 	asset.CoinId = request.Id
@@ -155,7 +155,7 @@ func (c *AssetsController) Delete() {
 	// ここ共通化出来る
 	var asset models.Asset
 
-	request := Request{}
+	request := AssetRequest{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
 
 	asset.CoinId = request.Id
