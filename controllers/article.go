@@ -45,17 +45,18 @@ func (c *ArticleController) Post() {
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *ArticleController) GetOne() {
-//	id := c.GetString(":id")
-//	if id != "" {
-//　		article, err := models.GetArticleById(strconv.ParseInt(id, 10, 64))
-//		if err != nil {
-//			c.Ctx.Output.Status = http.StatusNotFound
-//			c.Data["json"] = err.Error()
-//		} else {
-//			c.Data["json"] = article
-//		}
-//	}
-//	c.ServeJSON()
+	id := c.GetString(":id")
+	if id != "" {
+		i, err := strconv.ParseInt(id, 10, 64)
+		article, err := models.GetArticleById(i)
+		if err != nil {
+			c.Ctx.Output.Status = http.StatusNotFound
+			c.Data["json"] = err.Error()
+		} else {
+			c.Data["json"] = article
+		}
+	}
+	c.ServeJSON()
 }
 
 func (c *ArticleController) GetUsersAll() {

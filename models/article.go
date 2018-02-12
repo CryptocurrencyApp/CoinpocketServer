@@ -41,7 +41,7 @@ func AddArticle(m *Article) (i int64, err error) {
 func GetArticleById(id int64) (v *Article, err error) {
 	o := orm.NewOrm()
 	v = &Article{Id: id}
-	if err = o.QueryTable(new(Article)).Filter("Id", id).RelatedSel().One(v); err == nil {
+	if err = o.Read(v); err == nil {
 		return v, nil
 	}
 	return nil, err
