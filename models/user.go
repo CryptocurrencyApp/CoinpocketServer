@@ -66,11 +66,14 @@ func UpdateUserById(m *User) (err error) {
 	return err
 }
 
-//func Login(username, password string) bool {
-//	for _, u := range UserList {
-//		if u.Username == username && u.Password == password {
-//			return true
-//		}
-//	}
-//	return false
-//}
+func Login(request *User) (userId string, err error) {
+	o := orm.NewOrm()
+	user := &User{Mail: request.Mail}
+
+	if err = o.Read(user, "mail"); err == nil {
+		fmt.Println(user)
+		return user.Id, nil
+	}
+
+	return
+}
