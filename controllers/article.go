@@ -112,5 +112,16 @@ func (c *ArticleController) ToggleBad() {
 // @Failure 403 id is empty
 // @router /:id [delete]
 func (c *ArticleController) Delete() {
+	id := c.GetString(":id")
 
+	i, err := strconv.ParseInt(id, 10, 64)
+	err = models.DeleteArticle(i)
+	if err != nil {
+		c.Ctx.Output.Status = http.StatusInternalServerError
+		c.Data["json"] = map[string]string{"message": err.Error()}
+	} else {
+		c.Data["json"] = map[string]string{"id": id}
+	}
+
+	c.ServeJSON()
 }

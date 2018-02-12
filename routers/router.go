@@ -27,12 +27,10 @@ func init() {
 		beego.NSRouter("/", &controllers.ArticleController{}, "post:Post"),
 		beego.NSRouter("/", &controllers.ArticleController{}, "get:GetAll"),
 		beego.NSRouter("/:id", &controllers.ArticleController{}, "get:GetOne"),
-	)
-	usersArticles := beego.NewNamespace("/users/:uid/articles",
-		beego.NSRouter("/", &controllers.ArticleController{}, "get:GetUsersAll"),
 		beego.NSRouter("/:id/good", &controllers.ArticleController{}, "put:ToggleGood"),
 		beego.NSRouter("/:id/bad", &controllers.ArticleController{}, "put:ToggleBad"),
 		beego.NSRouter("/:id", &controllers.ArticleController{}, "delete:Delete"),
+		beego.NSRouter("/users/:uid/articles", &controllers.ArticleController{}, "get:GetUsersAll"),
 	)
 	coinIds := beego.NewNamespace("/coinIds",
 		beego.NSRouter("", &controllers.CoinIdController{}, "get:GetAll"),
@@ -41,5 +39,5 @@ func init() {
 		beego.NSRouter("", &controllers.RateController{}, "get:GetAll"),
 	)
 
-	beego.AddNamespace(users, assets, articles, usersArticles, coinIds, rates)
+	beego.AddNamespace(users, assets, articles, coinIds, rates)
 }
