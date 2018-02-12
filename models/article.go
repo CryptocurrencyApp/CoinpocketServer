@@ -47,6 +47,20 @@ func GetArticleById(id int64) (v *Article, err error) {
 	return nil, err
 }
 
+func GetArticlesByUserId(uid string) (ml *[]Article, err error) {
+	o := orm.NewOrm()
+	table := o.QueryTable("article")
+
+	var article []Article
+
+	_, err = table.Filter("UserId", uid).All(&article)
+	if err != nil {
+		return nil, err
+	} else {
+		return &article, nil
+	}
+}
+
 func GetAllArticle() (ml *[]Article, err error) {
 	o := orm.NewOrm()
 	table := o.QueryTable("article")

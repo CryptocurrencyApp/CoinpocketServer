@@ -60,7 +60,17 @@ func (c *ArticleController) GetOne() {
 }
 
 func (c *ArticleController) GetUsersAll() {
-
+	uid := c.GetString(":uid")
+	if uid != "" {
+		articles, err := models.GetArticlesByUserId(uid)
+		if err != nil {
+			c.Ctx.Output.Status = http.StatusBadRequest
+			c.Data["json"] = err.Error()
+		} else {
+			c.Data["json"] = articles
+		}
+	}
+	c.ServeJSON()
 }
 
 // GetAll ...
