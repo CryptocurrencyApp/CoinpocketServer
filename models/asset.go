@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 	"strings"
 
@@ -131,15 +130,8 @@ func UpdateAssetById(m *Asset) (err error) {
 
 // DeleteAsset deletes Asset by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteAsset(id int64) (err error) {
+func DeleteAsset(m *Asset) (err error) {
 	o := orm.NewOrm()
-	v := Asset{Id: id}
-	// ascertain id exists in the database
-	if err = o.Read(&v); err == nil {
-		var num int64
-		if num, err = o.Delete(&Asset{Id: id}); err == nil {
-			fmt.Println("Number of records deleted in database:", num)
-		}
-	}
-	return
+	_, err = o.QueryTable("asset").Filter("CoinId", m.CoinId).Filter("UserId", m.UserId).Delete()
+	return err
 }

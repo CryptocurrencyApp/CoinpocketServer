@@ -39,6 +39,7 @@ func (c *AssetsController) URLMapping() {
 // @Failure 403 body is empty
 // @router / [post]
 func (c *AssetsController) Post() {
+	// ここ共通化出来る
 	var asset models.Asset
 	request := Request{}
 
@@ -47,6 +48,7 @@ func (c *AssetsController) Post() {
 	asset.CoinId = request.Id
 	asset.UserId = request.UserId
 	asset.Amount = fmt.Sprint(request.Amount)
+	// ここまで
 
 	_, err := models.AddAsset(&asset)
 	if err != nil {
@@ -122,6 +124,7 @@ func (c *AssetsController) GetAll() {
 // @Failure 403 :id is not int
 // @router /:id [put]
 func (c *AssetsController) Put() {
+	// ここ共通化出来る
 	var asset models.Asset
 
 	request := Request{}
@@ -130,6 +133,7 @@ func (c *AssetsController) Put() {
 	asset.CoinId = request.Id
 	asset.UserId = request.UserId
 	asset.Amount = fmt.Sprint(request.Amount)
+	// ここまで
 
 	err := models.UpdateAssetById(&asset)
 	if err != nil {
@@ -150,7 +154,26 @@ func (c *AssetsController) Put() {
 // @Failure 403 id is empty
 // @router /:id [delete]
 func (c *AssetsController) Delete() {
+	// ここ共通化出来る
+	var asset models.Asset
 
+	request := Request{}
+	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
+
+	asset.CoinId = request.Id
+	asset.UserId = request.UserId
+	asset.Amount = fmt.Sprint(request.Amount)
+	// ここまで
+
+	err := models.DeleteAsset(&asset)
+	if err != nil {
+		c.Ctx.Output.Status = http.StatusInternalServerError
+		c.Data["json"] = map[string]string{"message": err.Error()}
+	} else {
+		c.Data["json"] = map[string]string{"id": asset.CoinId}
+	}
+
+	c.ServeJSON()
 }
 
 const priceFilePath = "./rateLog/newest.json"
