@@ -14,15 +14,6 @@ type ArticleController struct {
 	beego.Controller
 }
 
-// URLMapping ...
-func (c *ArticleController) URLMapping() {
-	c.Mapping("Post", c.Post)
-	c.Mapping("GetOne", c.GetOne)
-	c.Mapping("GetAll", c.GetAll)
-	c.Mapping("Put", c.Put)
-	c.Mapping("Delete", c.Delete)
-}
-
 // Post ...
 // @Title Create
 // @Description create Article
@@ -54,6 +45,20 @@ func (c *ArticleController) Post() {
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *ArticleController) GetOne() {
+//	id := c.GetString(":id")
+//	if id != "" {
+//　		article, err := models.GetArticleById(strconv.ParseInt(id, 10, 64))
+//		if err != nil {
+//			c.Ctx.Output.Status = http.StatusNotFound
+//			c.Data["json"] = err.Error()
+//		} else {
+//			c.Data["json"] = article
+//		}
+//	}
+//	c.ServeJSON()
+}
+
+func (c *ArticleController) GetUsersAll() {
 
 }
 
@@ -80,15 +85,11 @@ func (c *ArticleController) GetAll() {
 	c.ServeJSON()
 }
 
-// Put ...
-// @Title Put
-// @Description update the Article
-// @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Article	true		"body for Article content"
-// @Success 200 {object} models.Article
-// @Failure 403 :id is not int
-// @router /:id [put]
-func (c *ArticleController) Put() {
+func (c *ArticleController) ToggleGood() {
+
+}
+
+func (c *ArticleController) ToggleBad() {
 
 }
 

@@ -4,11 +4,9 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"encoding/json"
-	"log"
 	"fmt"
-	"os"
-	"io/ioutil"
 	"net/http"
+	"github.com/CryptocurrencyApp/CoinpocketServer/lib/rate"
 )
 
 // AssetsController operations for Assets
@@ -16,7 +14,7 @@ type AssetsController struct {
 	beego.Controller
 }
 
-type PostRequest struct {
+type Request struct {
 	Id     string
 	UserId string `json:"user_id"`
 	Amount float64
@@ -39,19 +37,21 @@ func (c *AssetsController) URLMapping() {
 // @Failure 403 body is empty
 // @router / [post]
 func (c *AssetsController) Post() {
+	// ここ共通化出来る
 	var asset models.Asset
-	request := PostRequest{}
+	request := Request{}
 
 	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
 
 	asset.CoinId = request.Id
 	asset.UserId = request.UserId
 	asset.Amount = fmt.Sprint(request.Amount)
+	// ここまで
 
 	_, err := models.AddAsset(&asset)
 	if err != nil {
-		log.Fatal(err)
-		c.Data["json"] = err
+		c.Ctx.Output.Status = http.StatusBadRequest
+		c.Data["json"] = map[string]string{"message": "Already registered. Please use HTTP/PUT method."}
 	} else {
 		c.Data["json"] = map[string]string{"id": asset.CoinId, "amount": asset.Amount}
 	}
@@ -97,13 +97,13 @@ func (c *AssetsController) GetAll() {
 	} else {
 		var result []map[string]string
 
-		rates := getRates()
+		rates, _ := rate.GetRates()
 
 		for _, a := range *asset {
 			result = append(result, map[string]string{
 				"id":        a.CoinId,
 				"amount":    a.Amount,
-				"price_jpy": getJpyPrice(a.CoinId, rates),
+				"price_jpy": rate.GetJpyPrice(a.CoinId, rates),
 			})
 		}
 
@@ -122,7 +122,26 @@ func (c *AssetsController) GetAll() {
 // @Failure 403 :id is not int
 // @router /:id [put]
 func (c *AssetsController) Put() {
+	// ここ共通化出来る
+	var asset models.Asset
 
+	request := Request{}
+	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
+
+	asset.CoinId = request.Id
+	asset.UserId = request.UserId
+	asset.Amount = fmt.Sprint(request.Amount)
+	// ここまで
+
+	err := models.UpdateAssetById(&asset)
+	if err != nil {
+		c.Ctx.Output.Status = http.StatusInternalServerError
+		c.Data["json"] = map[string]string{"message": err.Error()}
+	} else {
+		c.Data["json"] = map[string]string{"id": asset.CoinId, "amount": asset.Amount}
+	}
+
+	c.ServeJSON()
 }
 
 // Delete ...
@@ -133,54 +152,24 @@ func (c *AssetsController) Put() {
 // @Failure 403 id is empty
 // @router /:id [delete]
 func (c *AssetsController) Delete() {
+	// ここ共通化出来る
+	var asset models.Asset
 
-}
+	request := Request{}
+	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
 
-const priceFilePath = "./rateLog/newest.json"
+	asset.CoinId = request.Id
+	asset.UserId = request.UserId
+	asset.Amount = fmt.Sprint(request.Amount)
+	// ここまで
 
-type Rates struct {
-	GetAt    string
-	InfoList []Rate
-}
-
-type Rate struct {
-	ID               string  `json:"id"`
-	Name             string  `json:"name"`
-	Symbol           string  `json:"symbol"`
-	PriceUsd         float64 `json:"price_usd"`
-	PriceJpy         float64 `json:"price_jpy"`
-	PriceBtc         float64 `json:"price_btc"`
-	PercentChange1H  float64 `json:"percent_change_1h"`
-	PercentChange24H float64 `json:"percent_change_24h"`
-	PercentChange7D  float64 `json:"percent_change_7d"`
-}
-
-func getJpyPrice(coinId string, rates Rates) (price string) {
-	for _, rate := range rates.InfoList {
-		if rate.ID == coinId {
-			price = fmt.Sprint(rate.PriceJpy)
-		}
-	}
-
-	return price
-}
-
-func getRates() (rates Rates) {
-	file, err := os.OpenFile(priceFilePath, os.O_RDONLY, 700)
+	err := models.DeleteAsset(&asset)
 	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-
-	raw, err := ioutil.ReadAll(file)
-	if err != nil {
-		log.Fatal(err)
+		c.Ctx.Output.Status = http.StatusInternalServerError
+		c.Data["json"] = map[string]string{"message": err.Error()}
+	} else {
+		c.Data["json"] = map[string]string{"id": asset.CoinId}
 	}
 
-	err = json.Unmarshal(raw, &rates)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return rates
+	c.ServeJSON()
 }

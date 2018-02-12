@@ -28,7 +28,7 @@ func AddUser(u *User) (i string, err error) {
 	o := orm.NewOrm()
 	u.Id = random.RandString6(10)
 	u.Salt = random.RandString6(20)
-	u.Password = hash.ToHash(u.Password)
+	u.Password = hash.ToHash(u.Password, u.Salt)
 
 	id, err := o.Insert(u)
 	fmt.Printf("ID: %d, ERR: %v\n", id, err)
