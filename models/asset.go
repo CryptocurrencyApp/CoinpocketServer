@@ -124,8 +124,7 @@ func UpdateAssetById(m *Asset) (err error) {
 	_, err = o.QueryTable("asset").Filter("CoinId", m.CoinId).Filter("UserId", m.UserId).Update(orm.Params{
 		"Amount": m.Amount,
 	})
-
-	return err
+	return
 }
 
 // DeleteAsset deletes Asset by Id and returns error if
@@ -133,5 +132,5 @@ func UpdateAssetById(m *Asset) (err error) {
 func DeleteAsset(m *Asset) (err error) {
 	o := orm.NewOrm()
 	_, err = o.QueryTable("asset").Filter("CoinId", m.CoinId).Filter("UserId", m.UserId).Delete()
-	return err
+	return
 }
