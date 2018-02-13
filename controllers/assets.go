@@ -78,7 +78,7 @@ func (c *AssetsController) GetAll() {
 		//c.Ctx.Output.Status = http.StatusNotFound
 		//c.Data["json"] = map[string]string{"message": err}
 		// assetsがない場合
-		c.Data["json"] = []map[string]string{ }
+		c.Data["json"] = []map[string]string{}
 	} else {
 		var result []map[string]string
 
