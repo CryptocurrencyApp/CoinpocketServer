@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"github.com/CryptocurrencyApp/CoinpocketServer/lib/rate"
+	"github.com/CryptocurrencyApp/CoinpocketServer/models"
+	"github.com/astaxie/beego"
+	"net/http"
 )
 
 // AssetsController operations for Assets

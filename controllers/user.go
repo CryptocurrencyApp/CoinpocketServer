@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"github.com/astaxie/beego"
 	"net/http"
-	"fmt"
 )
 
 // Operations about Users

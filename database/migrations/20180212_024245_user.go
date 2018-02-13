@@ -26,7 +26,7 @@ func (m *User_20180212_024245) Up() {
 		"MODIFY COLUMN password nvarchar(300) NOT NULL," +
 		"MODIFY COLUMN salt nvarchar(300) NOT NULL;"
 
-		m.SQL(sql)
+	m.SQL(sql)
 }
 
 // Reverse the migrations

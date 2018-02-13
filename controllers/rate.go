@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
+	"github.com/astaxie/beego"
 	"net/http"
 )
 

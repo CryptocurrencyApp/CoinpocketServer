@@ -1,10 +1,10 @@
 package rate
 
 import (
-	"os"
-	"io/ioutil"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"os"
 )
 
 const priceFilePath = "./rateLog/newest.json"

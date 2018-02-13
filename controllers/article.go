@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/CryptocurrencyApp/CoinpocketServer/models"
-	"net/http"
 	"encoding/json"
 	"fmt"
+	"github.com/CryptocurrencyApp/CoinpocketServer/models"
+	"github.com/astaxie/beego"
+	"net/http"
 	"strconv"
 )
 
@@ -35,7 +35,8 @@ func (c *ArticleController) Post() {
 		fmt.Println(uid)
 		c.Data["json"] = map[string]string{"aid": strconv.Itoa((int)(uid))}
 	}
-	c.ServeJSON()}
+	c.ServeJSON()
+}
 
 // GetOne ...
 // @Title GetOne

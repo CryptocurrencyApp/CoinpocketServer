@@ -1,12 +1,12 @@
 package models
 
 import (
+	"errors"
 	"fmt"
+	"github.com/CryptocurrencyApp/CoinpocketServer/lib/hash"
+	"github.com/CryptocurrencyApp/CoinpocketServer/lib/random"
 	"github.com/astaxie/beego/orm"
 	"time"
-	"github.com/CryptocurrencyApp/CoinpocketServer/lib/random"
-	"github.com/CryptocurrencyApp/CoinpocketServer/lib/hash"
-	"errors"
 )
 
 type User struct {

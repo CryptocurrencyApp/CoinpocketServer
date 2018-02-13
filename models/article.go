@@ -7,14 +7,14 @@ import (
 )
 
 type Article struct {
-	Id   int64  `orm:"auto"`
-	UserId string `json:"user_id";orm:"size(128)"`
-	UserName string `json:"user_name";orm:"size(128)"`
-	Url string `orm:"size(512)"`
-	Image string `orm:"size(512)"`
-	Comment string `orm:"size(256)"`
-	Good int
-	Bad int
+	Id        int64     `json:"id";orm:"auto"`
+	UserId    string    `json:"user_id";orm:"size(128)"`
+	UserName  string    `json:"user_name";orm:"size(128)"`
+	Url       string    `json:"url";orm:"size(512)"`
+	Image     string    `json:"image";orm:"size(512)"`
+	Comment   string    `json:"comment";orm:"size(256)"`
+	Good      int       `json:"bad"`
+	Bad       int       `json:"good"`
 	CreatedAt time.Time `json:"created_at" orm:"auto_now_add;type(datetime)"`
 	UpdatedAt time.Time `json:"updated_at" orm:"auto_now;type(datetime)"`
 }

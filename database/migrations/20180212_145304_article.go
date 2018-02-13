@@ -25,7 +25,7 @@ func (m *Article_20180212_145304) Up() {
 		"user_id nvarchar(80) NOT NULL, " +
 		"user_name nvarchar(128) NOT NULL, " +
 		"url nvarchar(512) NOT NULL, " +
-		"image nvarchar(512) NOT NULL, " +
+		"image nvarchar(512), " +
 		"comment nvarchar(256) NOT NULL, " +
 		"good int DEFAULT 0, " +
 		"bad int DEFAULT 0, " +
