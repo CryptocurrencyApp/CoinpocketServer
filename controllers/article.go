@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"github.com/astaxie/beego"
 	"net/http"
@@ -32,7 +31,6 @@ func (c *ArticleController) Post() {
 		c.Ctx.Output.Status = http.StatusBadRequest
 		c.Data["json"] = err.Error()
 	} else {
-		fmt.Println(uid)
 		c.Data["json"] = map[string]string{"aid": strconv.Itoa((int)(uid))}
 	}
 	c.ServeJSON()

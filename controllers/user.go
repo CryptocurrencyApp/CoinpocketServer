@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"github.com/astaxie/beego"
 	"net/http"
@@ -22,7 +21,6 @@ type UserController struct {
 func (u *UserController) Post() {
 	var user models.User
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-	fmt.Println(user)
 	uid, err := models.AddUser(&user)
 	if err != nil {
 		u.Ctx.Output.Status = http.StatusBadRequest
@@ -65,9 +63,7 @@ func (u *UserController) Put() {
 	uid := u.GetString(":id")
 	if uid != "" {
 		var user models.User
-		fmt.Println((string)(u.Ctx.Input.RequestBody))
 		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-		fmt.Println(user)
 		user.Id = uid
 		err := models.UpdateUserById(&user)
 		if err != nil {

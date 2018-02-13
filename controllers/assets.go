@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/CryptocurrencyApp/CoinpocketServer/lib/rate"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"github.com/astaxie/beego"
@@ -14,19 +13,11 @@ type AssetsController struct {
 	beego.Controller
 }
 
-type AssetRequest struct {
-	Id     string
-	UserId string `json:"user_id"`
-	Amount float64
-}
-
 // URLMapping ...
 func (c *AssetsController) URLMapping() {
 	c.Mapping("Post", c.Post)
 	c.Mapping("GetOne", c.GetOne)
-	c.Mapping("GetAll", c.GetAll)
 	c.Mapping("Put", c.Put)
-	c.Mapping("Delete", c.Delete)
 }
 
 // Post ...
@@ -37,16 +28,8 @@ func (c *AssetsController) URLMapping() {
 // @Failure 403 body is empty
 // @router / [post]
 func (c *AssetsController) Post() {
-	// ここ共通化出来る
 	var asset models.Asset
-	request := AssetRequest{}
-
-	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
-
-	asset.CoinId = request.Id
-	asset.UserId = request.UserId
-	asset.Amount = fmt.Sprint(request.Amount)
-	// ここまで
+	json.Unmarshal(c.Ctx.Input.RequestBody, &asset)
 
 	_, err := models.AddAsset(&asset)
 	if err != nil {
@@ -92,8 +75,10 @@ func (c *AssetsController) GetAll() {
 
 	asset, err := models.GetAssetById(userId)
 	if err != "" {
-		c.Ctx.Output.Status = http.StatusNotFound
-		c.Data["json"] = map[string]string{"message": err}
+		//c.Ctx.Output.Status = http.StatusNotFound
+		//c.Data["json"] = map[string]string{"message": err}
+		// assetsがない場合
+		c.Data["json"] = []map[string]string{ }
 	} else {
 		var result []map[string]string
 
@@ -122,16 +107,8 @@ func (c *AssetsController) GetAll() {
 // @Failure 403 :id is not int
 // @router /:id [put]
 func (c *AssetsController) Put() {
-	// ここ共通化出来る
 	var asset models.Asset
-
-	request := AssetRequest{}
-	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
-
-	asset.CoinId = request.Id
-	asset.UserId = request.UserId
-	asset.Amount = fmt.Sprint(request.Amount)
-	// ここまで
+	json.Unmarshal(c.Ctx.Input.RequestBody, &asset)
 
 	err := models.UpdateAssetById(&asset)
 	if err != nil {
@@ -152,23 +129,15 @@ func (c *AssetsController) Put() {
 // @Failure 403 id is empty
 // @router /:id [delete]
 func (c *AssetsController) Delete() {
-	// ここ共通化出来る
 	var asset models.Asset
-
-	request := AssetRequest{}
-	json.Unmarshal(c.Ctx.Input.RequestBody, &request)
-
-	asset.CoinId = request.Id
-	asset.UserId = request.UserId
-	asset.Amount = fmt.Sprint(request.Amount)
-	// ここまで
-
+	asset.UserId = c.GetString(":uid")
+	asset.CoinId = c.GetString(":cid")
 	err := models.DeleteAsset(&asset)
 	if err != nil {
 		c.Ctx.Output.Status = http.StatusInternalServerError
 		c.Data["json"] = map[string]string{"message": err.Error()}
 	} else {
-		c.Data["json"] = map[string]string{"id": asset.CoinId}
+		c.Data["json"] = map[string]string{"message": "Delete Completed"}
 	}
 
 	c.ServeJSON()

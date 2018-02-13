@@ -22,6 +22,7 @@ func init() {
 	assets := beego.NewNamespace("/assets",
 		beego.NSRouter("", &controllers.AssetsController{}),
 		beego.NSRouter("/:id", &controllers.AssetsController{}, "get:GetAll"),
+		beego.NSRouter("/:uid/:cid", &controllers.AssetsController{}, "delete:Delete"),
 	)
 	articles := beego.NewNamespace("/articles",
 		beego.NSRouter("/", &controllers.ArticleController{}, "post:Post"),

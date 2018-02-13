@@ -10,9 +10,9 @@ import (
 
 type Asset struct {
 	Id     int64  `orm:"auto;pk"`
-	UserId string `orm:"size(128)"`
-	CoinId string `orm:"size(128)"`
-	Amount string
+	UserId string `json:"user_id";orm:"size(128)"`
+	CoinId string `json:"coin_id";orm:"size(128)"`
+	Amount string `json:"amount"`
 }
 
 func init() {
