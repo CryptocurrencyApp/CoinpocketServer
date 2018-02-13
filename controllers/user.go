@@ -5,6 +5,7 @@ import (
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"github.com/astaxie/beego"
 	"net/http"
+	"fmt"
 )
 
 // Operations about Users
@@ -21,6 +22,7 @@ type UserController struct {
 func (u *UserController) Post() {
 	var user models.User
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)
+	fmt.Println(user)
 	uid, err := models.AddUser(&user)
 	if err != nil {
 		u.Ctx.Output.Status = http.StatusBadRequest
