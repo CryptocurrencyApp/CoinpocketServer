@@ -61,7 +61,7 @@ func (c *ArticleController) GetOne() {
 }
 
 func (c *ArticleController) GetUsersAll() {
-	uid := c.GetString(":uid")
+	uid := c.GetString(":id")
 	if uid != "" {
 		articles, err := models.GetArticlesByUserId(uid)
 		if err != nil {
