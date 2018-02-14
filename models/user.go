@@ -17,7 +17,7 @@ type User struct {
 	Mail      string    `json:"mail"`
 	Password  string    `json:"password"`
 	Salt      string    `json:"salt"`
-	CreatedAt time.Time `json:"created_at"artic`
+	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
