@@ -17,8 +17,8 @@ type Article struct {
 	SiteTitle     string    `json:"site_title";orm:"size(512)"`
 	Image     string    `json:"image";orm:"size(512)"`
 	SiteName      string    `json:"site_name";orm:"size(512)"`
-	CreatedAt time.Time `json:"created_at" orm:"auto_now_add;type(datetime)"`
-	UpdatedAt time.Time `json:"updated_at" orm:"auto_now;type(datetime)"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func init() {

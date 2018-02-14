@@ -27,8 +27,8 @@ func (m *Users_20180204_220422) Up() {
 		"mail nvarchar(100), " +
 		"password nvarchar(300), " +
 		"salt nvarchar(300), " +
-		"created_at datetime, " +
-		"updated_at datetime);"
+		"created_at timestamp default current_timestamp, " +
+		"updated_at timestamp default current_timestamp on update current_timestamp);"
 
 	m.SQL(sql)
 

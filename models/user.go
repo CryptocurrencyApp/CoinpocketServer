@@ -17,8 +17,8 @@ type User struct {
 	Mail      string    `json:"mail"`
 	Password  string    `json:"password"`
 	Salt      string    `json:"salt"`
-	CreatedAt time.Time `json:"created_at" orm:"auto_now_add;type(datetime)"`
-	UpdatedAt time.Time `json:"updated_at" orm:"auto_now;type(datetime)"`
+	CreatedAt time.Time `json:"created_at"artic`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func init() {

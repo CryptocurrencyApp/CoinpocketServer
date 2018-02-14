@@ -29,8 +29,8 @@ func (m *Article_20180212_145304) Up() {
 		"comment nvarchar(256) NOT NULL, " +
 		"good int DEFAULT 0, " +
 		"bad int DEFAULT 0, " +
-		"created_at datetime, " +
-		"updated_at datetime);"
+		"created_at timestamp default current_timestamp, " +
+		"updated_at timestamp default current_timestamp on update current_timestamp);"
 	m.SQL(sql)
 }
 
