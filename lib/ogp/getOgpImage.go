@@ -1,8 +1,8 @@
 package ogp
 
 import (
-	"github.com/PuerkitoBio/goquery"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
+	"github.com/PuerkitoBio/goquery"
 )
 
 func GetOgpImage(article *models.Article) (err error) {
