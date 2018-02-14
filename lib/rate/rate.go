@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const priceFilePath = "/home/ubuntu/rateLog/newest/newest.json"
+const priceFilePath = "/home/ubuntu/ratelog/newest/newest.json"
 
 type Rates struct {
 	GetAt    string
