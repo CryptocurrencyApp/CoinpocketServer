@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/CryptocurrencyApp/CoinpocketServer/lib/ogp"
 	"github.com/CryptocurrencyApp/CoinpocketServer/models"
 	"github.com/astaxie/beego"
 	"net/http"
@@ -23,6 +24,7 @@ type ArticleController struct {
 func (c *ArticleController) Post() {
 	var article models.Article
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &article)
+	ogp.GetOgpImage(&article)
 	user, err := models.GetUserById(article.UserId)
 	article.UserName = user.Name
 
@@ -31,7 +33,7 @@ func (c *ArticleController) Post() {
 		c.Ctx.Output.Status = http.StatusBadRequest
 		c.Data["json"] = err.Error()
 	} else {
-		c.Data["json"] = map[string]string{"aid": strconv.Itoa((int)(uid))}
+		c.Data["json"] = map[string]string{"id": strconv.Itoa((int)(uid))}
 	}
 	c.ServeJSON()
 }
@@ -98,10 +100,10 @@ func (c *ArticleController) GetAll() {
 func (c *ArticleController) ToggleGood() {
 	id := c.GetString(":id")
 	if id != "" {
-		var evalation models.Evaluation
-		json.Unmarshal(c.Ctx.Input.RequestBody, &evalation)
+		var evaluation models.Evaluation
+		json.Unmarshal(c.Ctx.Input.RequestBody, &evaluation)
 		i, err := strconv.ParseInt(id, 10, 64)
-		err = models.ToggleGood2Article(i, evalation.IsAdd)
+		err = models.ToggleGood2Article(i, evaluation.IsAdd)
 		if err != nil {
 			c.Ctx.Output.Status = http.StatusBadRequest
 			c.Data["json"] = err.Error()

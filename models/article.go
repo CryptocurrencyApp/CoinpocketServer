@@ -10,11 +10,13 @@ type Article struct {
 	Id        int64     `json:"id";orm:"auto"`
 	UserId    string    `json:"user_id";orm:"size(128)"`
 	UserName  string    `json:"user_name";orm:"size(128)"`
-	Url       string    `json:"url";orm:"size(512)"`
-	Image     string    `json:"image";orm:"size(512)"`
 	Comment   string    `json:"comment";orm:"size(256)"`
 	Good      int       `json:"good"`
 	Bad       int       `json:"bad"`
+	Url       string    `json:"url";orm:"size(512)"`
+	SiteTitle     string    `json:"site_title";orm:"size(512)"`
+	Image     string    `json:"image";orm:"size(512)"`
+	SiteName      string    `json:"site_name";orm:"size(512)"`
 	CreatedAt time.Time `json:"created_at" orm:"auto_now_add;type(datetime)"`
 	UpdatedAt time.Time `json:"updated_at" orm:"auto_now;type(datetime)"`
 }
