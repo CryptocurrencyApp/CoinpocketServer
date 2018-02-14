@@ -37,7 +37,7 @@ func GetJpyPrice(coinId string, rates Rates) (price string) {
 }
 
 func GetRates() (rates Rates, err error) {
-	file, err := os.OpenFile(priceFilePath, os.O_RDONLY, 700)
+	file, err := os.OpenFile(priceFilePath, os.O_RDONLY, 777)
 	if err != nil {
 		return
 	}
